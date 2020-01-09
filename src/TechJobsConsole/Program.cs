@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 namespace TechJobsConsole
 {
     class Program
@@ -51,9 +51,9 @@ namespace TechJobsConsole
                 }
                 else // choice is "search"
                 {
+
                     // How does the user want to search (e.g. by skill or employer)
                     string columnChoice = GetUserSelection("Search", columnChoices);
-
                     // What is their search term?
                     Console.WriteLine("\nSearch term: ");
                     string searchTerm = Console.ReadLine();
@@ -63,16 +63,21 @@ namespace TechJobsConsole
                     // Fetch results
                     if (columnChoice.Equals("all"))
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
+                        searchResults = JobData.FindByValue(searchTerm);
+                        PrintJobs(searchResults);
                     }
                     else
                     {
                         searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
                         PrintJobs(searchResults);
                     }
+
                 }
             }
         }
+
+
+
 
         /*
          * Returns the key of the selected item from the choices Dictionary
@@ -118,7 +123,13 @@ namespace TechJobsConsole
 
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("printJobs is not implemented yet");
+            foreach (Dictionary<string, string> jobs in someJobs)
+            {
+                foreach (KeyValuePair<string, string> job in jobs)
+                {
+                    Console.WriteLine("{0} {1}", job.Key, job.Value);
+                }
+            }
         }
     }
 }
